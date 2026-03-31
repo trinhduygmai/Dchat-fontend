@@ -1,0 +1,48 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap');
+
+@theme {
+  --font-manrope: "Manrope", sans-serif;
+  --font-headline: "Manrope", sans-serif;
+  --font-body: "Manrope", sans-serif;
+
+  --color-background-start: #8FAFB2;
+  --color-background-end: #BFC9C7;
+  --color-card: #F4F5F4;
+  --color-bubble-dark: #0F0F0F;
+  --color-bubble-light: #E9ECEB;
+
+  --color-surface-container-low: #F4F5F4;
+  --color-surface-container-high: #E9ECEB;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container: #F4F5F4;
+  --color-on-surface-variant: #586064;
+  --color-outline-variant: #abb3b7;
+  --color-primary: #0F0F0F;
+  --color-on-primary: #ffffff;
+  --color-background: #8FAFB2;
+  --color-on-surface: #0F0F0F;
+}
+
+@layer base {
+  body {
+    @apply font-manrope;
+    background: linear-gradient(135deg, var(--color-background-start) 0%, var(--color-background-end) 100%);
+    min-height: 100vh;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #dbe4e7;
+  border-radius: 10px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #3f3f3f;
+}
