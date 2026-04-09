@@ -47,6 +47,7 @@ export interface Conversation {
   isGroup?: boolean;
   isCloud?: boolean;
   members?: string[]; // user IDs
+  adminId?: string; // ID of the group administrator
 }
 
 export interface FriendRequest {

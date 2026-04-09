@@ -8,17 +8,19 @@ import { UserPlus, Users, UserCheck } from 'lucide-react';
 import { useGlobal } from '../../context/GlobalContext';
 
 interface ContactMenuProps {
-  activeContactTab: 'friends' | 'requests' | 'groups';
-  setActiveContactTab: (tab: 'friends' | 'requests' | 'groups') => void;
+  activeContactTab: 'friends' | 'groups' | 'connections';
+  setActiveContactTab: (tab: 'friends' | 'groups' | 'connections') => void;
 }
 
 const ContactMenu: React.FC<ContactMenuProps> = ({ activeContactTab, setActiveContactTab }) => {
-  const { friendList, friendRequests } = useGlobal();
+  const { friendList, friendRequests, conversations } = useGlobal();
+
+  const groupCount = conversations.filter(c => c.isGroup).length;
 
   const menuItems = [
     { id: 'friends', icon: UserCheck, label: 'Danh sách bạn bè', count: friendList.length },
-    { id: 'requests', icon: UserPlus, label: 'Lời mời kết bạn', count: friendRequests.length, badge: true },
-    { id: 'groups', icon: Users, label: 'Danh sách nhóm', count: 0 },
+    { id: 'connections', icon: UserPlus, label: 'Thêm bạn & Lời mời', count: friendRequests.length, badge: true },
+    { id: 'groups', icon: Users, label: 'Danh sách nhóm', count: groupCount },
   ];
 
   return (

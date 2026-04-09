@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { Cloud, MessageSquare, Users, Settings, Sparkles, LogOut } from 'lucide-react';
+import { Cloud, MessageSquare, Users, Settings, Sparkles, LogOut, Contact } from 'lucide-react';
 import { useGlobal } from '../../context/GlobalContext';
 
 const Sidebar: React.FC = () => {
@@ -13,8 +13,8 @@ const Sidebar: React.FC = () => {
   const navItems = [
     { id: 'home', icon: Cloud, label: 'My Cloud' },
     { id: 'chat', icon: MessageSquare, label: 'Chat' },
-    { id: 'contacts', icon: Users, label: 'Contacts' },
-    { id: 'settings', icon: Settings, label: 'Settings' },
+    { id: 'contacts', icon: Contact, label: 'Danh bạ' },
+    { id: 'settings', icon: Settings, label: 'Cài đặt' },
   ];
 
   const handleNavClick = (id: string) => {

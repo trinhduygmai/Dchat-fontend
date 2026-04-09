@@ -4,14 +4,22 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { X, Users, Image, FileText, Link, ChevronDown, ChevronRight } from 'lucide-react';
+import { X, Users, Image, FileText, Link, ChevronDown, ChevronRight, UserPlus, UserMinus, LogOut, Crown } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useGlobal } from '../../context/GlobalContext';
 import { dataService } from '../../services/dataService';
 import { ChatMedia } from '../../types/types';
 
-const ChatInfoDrawer: React.FC = () => {
-  const { isChatInfoOpen, setIsChatInfoOpen, activeConversation } = useGlobal();
+interface ChatInfoDrawerProps {
+  isGroup?: boolean;
+  currentUserRole?: 'admin' | 'member';
+}
+
+const ChatInfoDrawer: React.FC<ChatInfoDrawerProps> = ({ 
+  isGroup: propsIsGroup, 
+  currentUserRole = 'member' 
+}) => {
+  const { isChatInfoOpen, setIsChatInfoOpen, activeConversation, friendList, user, leaveGroup, changeGroupAdmin } = useGlobal();
   const [media, setMedia] = useState<ChatMedia | null>(null);
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
     members: true,
@@ -19,6 +27,8 @@ const ChatInfoDrawer: React.FC = () => {
     files: true,
     links: true,
   });
+
+  const isGroup = propsIsGroup ?? activeConversation?.isGroup;
 
   useEffect(() => {
     if (isChatInfoOpen && activeConversation) {
@@ -45,7 +55,7 @@ const ChatInfoDrawer: React.FC = () => {
           className="w-80 h-full bg-card border-l border-zinc-200/50 flex flex-col z-50 shadow-xl"
         >
           <header className="p-6 border-b border-zinc-200/50 flex justify-between items-center">
-            <h3 className="font-bold text-lg">Chat Info</h3>
+            <h3 className="font-bold text-lg">Thông tin hội thoại</h3>
             <button
               onClick={() => setIsChatInfoOpen(false)}
               className="p-2 hover:bg-zinc-100 rounded-full transition-all text-zinc-500"
@@ -62,30 +72,80 @@ const ChatInfoDrawer: React.FC = () => {
                 className="w-24 h-24 rounded-full object-cover shadow-lg border-4 border-white"
               />
               <h4 className="font-bold text-xl">{activeConversation?.name}</h4>
-              {!activeConversation?.isCloud && (
+              {!isGroup && !activeConversation?.isCloud && (
                 <span className="text-sm text-green-500 font-medium">Online</span>
+              )}
+              {isGroup && (
+                <span className="text-xs font-bold text-zinc-400 uppercase tracking-widest">
+                  Nhóm • {activeConversation?.members?.length || 0} thành viên
+                </span>
               )}
             </div>
 
             <div className="space-y-4">
               {/* Members Section */}
-              {activeConversation?.isGroup && (
-                <div className="space-y-2">
+              {isGroup && (
+                <div className="space-y-3">
                   <button
                     onClick={() => toggleSection('members')}
-                    className="w-full flex justify-between items-center font-bold text-sm text-zinc-500 uppercase tracking-widest"
+                    className="w-full flex justify-between items-center font-bold text-xs text-zinc-400 uppercase tracking-widest"
                   >
                     <div className="flex items-center gap-2">
                       <Users className="w-4 h-4" />
-                      Members
+                      Thành viên
                     </div>
                     {expandedSections.members ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
                   </button>
+                  
                   {expandedSections.members && (
-                    <div className="pl-6 space-y-2">
-                      {/* Mock members */}
-                      <p className="text-sm">Member 1</p>
-                      <p className="text-sm">Member 2</p>
+                    <div className="space-y-3">
+                      <button className="w-full flex items-center gap-3 p-2 rounded-xl hover:bg-zinc-50 transition-all text-zinc-600 group">
+                        <div className="w-8 h-8 rounded-full bg-zinc-100 flex items-center justify-center group-hover:bg-white transition-all">
+                          <UserPlus className="w-4 h-4" />
+                        </div>
+                        <span className="text-sm font-bold">Thêm thành viên</span>
+                      </button>
+
+                      <div className="space-y-2">
+                        {/* Render actual members if available, otherwise fallback to mock */}
+                        {(activeConversation?.members?.map(id => {
+                          if (id === user?.id) return user;
+                          return friendList.find(f => f.id === id);
+                        }).filter(Boolean) as any[]).map((member) => (
+                          <div key={member.id} className="flex items-center justify-between group">
+                            <div className="flex items-center gap-3">
+                              <img src={member.avatar} alt={member.name} className="w-8 h-8 rounded-full object-cover" />
+                              <div className="flex flex-col">
+                                <span className="text-sm font-medium text-zinc-900">{member.name}</span>
+                                {member.id === activeConversation?.adminId && (
+                                  <span className="text-[10px] font-bold text-primary uppercase">Trưởng nhóm</span>
+                                )}
+                              </div>
+                            </div>
+                            {currentUserRole === 'admin' && member.id !== user?.id && (
+                              <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all">
+                                <button 
+                                  onClick={() => {
+                                    if (window.confirm(`Bạn có chắc muốn chuyển quyền trưởng nhóm cho ${member.name}?`)) {
+                                      changeGroupAdmin(activeConversation!.id, member.id);
+                                    }
+                                  }}
+                                  className="p-1.5 text-zinc-400 hover:text-amber-500 hover:bg-amber-50 rounded-lg transition-all"
+                                  title="Chỉ định trưởng nhóm"
+                                >
+                                  <Crown className="w-4 h-4" />
+                                </button>
+                                <button 
+                                  className="p-1.5 text-zinc-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
+                                  title="Xóa khỏi nhóm"
+                                >
+                                  <UserMinus className="w-4 h-4" />
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -171,6 +231,23 @@ const ChatInfoDrawer: React.FC = () => {
               </div>
             </div>
           </div>
+          
+          {isGroup && (
+            <div className="p-6 border-t border-zinc-100">
+              <button 
+                onClick={() => {
+                  if (window.confirm('Bạn có chắc chắn muốn rời khỏi nhóm này?')) {
+                    leaveGroup(activeConversation!.id);
+                    setIsChatInfoOpen(false);
+                  }
+                }}
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-red-50 text-red-600 font-bold hover:bg-red-100 transition-all"
+              >
+                <LogOut className="w-4 h-4" />
+                Rời nhóm
+              </button>
+            </div>
+          )}
         </motion.aside>
       )}
     </AnimatePresence>

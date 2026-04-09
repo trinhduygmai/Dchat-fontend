@@ -4,12 +4,12 @@
  */
 
 import React, { useState } from 'react';
-import { Search } from 'lucide-react';
+import { Search, UserPlus } from 'lucide-react';
 import { useGlobal } from '../../context/GlobalContext';
 import { Conversation } from '../../types/types';
 
 const ConversationList: React.FC = () => {
-  const { conversations, activeConversation, setActiveConversation } = useGlobal();
+  const { conversations, activeConversation, setActiveConversation, setIsCreateGroupModalOpen } = useGlobal();
   const [searchTerm, setSearchTerm] = useState('');
 
   const filteredConversations = conversations.filter((conv) =>
@@ -26,7 +26,16 @@ const ConversationList: React.FC = () => {
   return (
     <section className="w-full flex flex-col bg-card rounded-xl overflow-hidden h-full shadow-sm">
       <div className="p-6 pb-4">
-        <h1 className="text-xl font-extrabold tracking-tight font-headline mb-4">Messages</h1>
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-xl font-extrabold tracking-tight font-headline">Messages</h1>
+          <button 
+            onClick={() => setIsCreateGroupModalOpen(true)}
+            className="p-2 hover:bg-zinc-100 rounded-full transition-all text-zinc-500"
+            title="Tạo nhóm mới"
+          >
+            <UserPlus className="w-5 h-5" />
+          </button>
+        </div>
         <div className="relative group">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg w-4 h-4" />
           <input

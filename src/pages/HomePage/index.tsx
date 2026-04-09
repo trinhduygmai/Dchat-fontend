@@ -10,13 +10,17 @@ import ChatWindow from '../../components/chat/ChatWindow';
 import ChatInfoDrawer from '../../components/chat/ChatInfoDrawer';
 import ContactMenu from '../../components/contacts/ContactMenu';
 import FriendList from '../../components/contacts/FriendList';
-import FriendRequests from '../../components/contacts/FriendRequests';
+import AddFriend from '../../components/contacts/AddFriend';
+import GroupList from '../../components/contacts/GroupList';
 import ProfileModal from '../../components/ui/ProfileModal';
+import CreateGroupModal from '../../components/chat/CreateGroupModal';
 import { useGlobal } from '../../context/GlobalContext';
 
 const HomePage: React.FC = () => {
-  const { activeTab, loading } = useGlobal();
-  const [activeContactTab, setActiveContactTab] = useState<'friends' | 'requests' | 'groups'>('friends');
+  const { activeTab, loading, activeConversation, user } = useGlobal();
+  const [activeContactTab, setActiveContactTab] = useState<'friends' | 'groups' | 'connections'>('friends');
+
+  const currentUserRole = activeConversation?.adminId === user?.id ? 'admin' : 'member';
 
   if (loading) {
     return (
@@ -34,7 +38,7 @@ const HomePage: React.FC = () => {
         <div className="flex-1 flex gap-4 overflow-hidden">
           <div className="flex-1 h-full flex gap-4">
             <ChatWindow />
-            <ChatInfoDrawer />
+            <ChatInfoDrawer currentUserRole={currentUserRole} />
           </div>
         </div>
       )}
@@ -46,7 +50,7 @@ const HomePage: React.FC = () => {
           </div>
           <div className="w-[70%] h-full flex gap-4">
             <ChatWindow />
-            <ChatInfoDrawer />
+            <ChatInfoDrawer currentUserRole={currentUserRole} />
           </div>
         </div>
       )}
@@ -56,12 +60,8 @@ const HomePage: React.FC = () => {
           <ContactMenu activeContactTab={activeContactTab} setActiveContactTab={setActiveContactTab} />
           <div className="flex-1 h-full overflow-hidden">
             {activeContactTab === 'friends' && <FriendList />}
-            {activeContactTab === 'requests' && <FriendRequests />}
-            {activeContactTab === 'groups' && (
-              <div className="h-full flex items-center justify-center bg-white/40 backdrop-blur-xl rounded-2xl border border-white/20 shadow-sm">
-                <p className="text-zinc-500 font-medium">Danh sách nhóm (Coming soon)</p>
-              </div>
-            )}
+            {activeContactTab === 'connections' && <AddFriend />}
+            {activeContactTab === 'groups' && <GroupList />}
           </div>
         </div>
       )}
@@ -73,6 +73,7 @@ const HomePage: React.FC = () => {
       )}
 
       <ProfileModal />
+      <CreateGroupModal />
     </div>
   );
 };

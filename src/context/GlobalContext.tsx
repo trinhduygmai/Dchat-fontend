@@ -18,6 +18,9 @@ interface GlobalContextType {
   setActiveConversation: (conv: Conversation | null) => void;
   conversations: Conversation[];
   setConversations: (convs: Conversation[]) => void;
+  createGroup: (name: string, members: string[]) => void;
+  leaveGroup: (groupId: string) => void;
+  changeGroupAdmin: (groupId: string, newAdminId: string) => void;
   friendList: User[];
   setFriendList: (friends: User[]) => void;
   friendRequests: FriendRequest[];
@@ -26,6 +29,8 @@ interface GlobalContextType {
   setIsChatInfoOpen: (open: boolean) => void;
   isProfileModalOpen: boolean;
   setIsProfileModalOpen: (open: boolean) => void;
+  isCreateGroupModalOpen: boolean;
+  setIsCreateGroupModalOpen: (open: boolean) => void;
   darkMode: boolean;
   setDarkMode: (dark: boolean) => void;
   login: (data: LoginData) => Promise<void>;
@@ -45,6 +50,7 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   const [friendRequests, setFriendRequests] = useState<FriendRequest[]>([]);
   const [isChatInfoOpen, setIsChatInfoOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [isCreateGroupModalOpen, setIsCreateGroupModalOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
 
   const initData = async () => {
@@ -126,6 +132,38 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     }
   };
 
+  const createGroup = (name: string, memberIds: string[]) => {
+    const newGroup: Conversation = {
+      id: `group-${Date.now()}`,
+      name,
+      avatar: `https://api.dicebear.com/7.x/identicon/svg?seed=${name}`,
+      lastMessage: 'Nhóm đã được tạo',
+      lastMessageTime: 'Vừa xong',
+      isGroup: true,
+      members: [user?.id || '', ...memberIds],
+      adminId: user?.id || '',
+    };
+    setConversations(prev => [newGroup, ...prev]);
+    setActiveConversation(newGroup);
+    setActiveTab('chat');
+  };
+
+  const leaveGroup = (groupId: string) => {
+    setConversations(prev => prev.filter(c => c.id !== groupId));
+    if (activeConversation?.id === groupId) {
+      setActiveConversation(null);
+    }
+  };
+
+  const changeGroupAdmin = (groupId: string, newAdminId: string) => {
+    setConversations(prev => prev.map(c => 
+      c.id === groupId ? { ...c, adminId: newAdminId } : c
+    ));
+    if (activeConversation?.id === groupId) {
+      setActiveConversation(prev => prev ? { ...prev, adminId: newAdminId } : null);
+    }
+  };
+
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add('dark');
@@ -147,6 +185,9 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         setActiveConversation,
         conversations,
         setConversations,
+        createGroup,
+        leaveGroup,
+        changeGroupAdmin,
         friendList,
         setFriendList,
         friendRequests,
@@ -155,6 +196,8 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         setIsChatInfoOpen,
         isProfileModalOpen,
         setIsProfileModalOpen,
+        isCreateGroupModalOpen,
+        setIsCreateGroupModalOpen,
         darkMode,
         setDarkMode,
         login,

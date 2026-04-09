@@ -4,16 +4,22 @@
  */
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Video, Phone, Search, Info, Play, Thermometer, ZoomIn, MoreHorizontal, MessageSquare } from 'lucide-react';
+import { Video, Phone, Search, Info, Play, Thermometer, ZoomIn, MoreHorizontal, MessageSquare, FileText } from 'lucide-react';
 import { useGlobal } from '../../context/GlobalContext';
 import { dataService } from '../../services/dataService';
 import { Message } from '../../types/types';
 import ChatInput from './ChatInput';
+import { Attachment } from './AttachmentPreview';
+import ImageViewer from '../ui/ImageViewer';
 
 const ChatWindow: React.FC = () => {
   const { activeConversation, isChatInfoOpen, setIsChatInfoOpen } = useGlobal();
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
+  const [viewerConfig, setViewerConfig] = useState<{ isOpen: boolean; url: string; alt?: string }>({
+    isOpen: false,
+    url: '',
+  });
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -39,14 +45,35 @@ const ChatWindow: React.FC = () => {
     }
   }, [messages]);
 
-  const handleSendMessage = async (content: string) => {
+  const handleSendMessage = async (content: string, attachments?: Attachment[]) => {
     if (!activeConversation) return;
     try {
+      // For now, we just send the text content. 
+      // In a real app, we would upload attachments first or send them with the message.
       const newMessage = await dataService.sendMessage(activeConversation.id, content);
-      setMessages((prev) => [...prev, newMessage]);
+      
+      // Mocking attachment display if any were selected
+      if (attachments && attachments.length > 0) {
+        const attachmentMsgs: Message[] = attachments.map(att => ({
+          id: att.id,
+          conversationId: activeConversation.id,
+          senderId: 'me',
+          content: att.type === 'image' ? '' : att.file.name,
+          type: att.type,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          metadata: att.type === 'image' ? { images: [att.previewUrl || ''] } : undefined
+        }));
+        setMessages((prev) => [...prev, newMessage, ...attachmentMsgs]);
+      } else {
+        setMessages((prev) => [...prev, newMessage]);
+      }
     } catch (error) {
       console.error('Failed to send message', error);
     }
+  };
+
+  const openViewer = (url: string, alt?: string) => {
+    setViewerConfig({ isOpen: true, url, alt });
   };
 
   if (!activeConversation) {
@@ -166,7 +193,11 @@ const ChatWindow: React.FC = () => {
               {msg.type === 'image' && (
                 <div className="grid grid-cols-2 gap-2 max-w-sm">
                   {msg.metadata?.images?.slice(0, 3).map((img, i) => (
-                    <div key={i} className={`relative group cursor-pointer overflow-hidden rounded-lg ${i === 0 ? 'row-span-2' : ''}`}>
+                    <div 
+                      key={i} 
+                      onClick={() => openViewer(img, 'Hình ảnh')}
+                      className={`relative group cursor-pointer overflow-hidden rounded-lg ${i === 0 ? 'row-span-2' : ''}`}
+                    >
                       <img src={img} alt="Property" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                       {i === 2 && msg.metadata?.images && msg.metadata.images.length > 3 && (
                         <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
@@ -181,6 +212,18 @@ const ChatWindow: React.FC = () => {
                 </div>
               )}
 
+              {msg.type === 'file' && (
+                <div className="flex items-center gap-3 bg-white/10 p-3 rounded-xl border border-white/20">
+                  <div className="p-2 bg-white/20 rounded-lg">
+                    <FileText className="w-5 h-5" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium truncate">{msg.content}</p>
+                    <p className="text-[10px] opacity-60 uppercase">Tài liệu</p>
+                  </div>
+                </div>
+              )}
+
               <span className={`text-[10px] opacity-60 mt-2 block ${msg.senderId === 'me' ? 'text-right' : 'text-left'} uppercase tracking-widest`}>
                 {msg.timestamp}
               </span>
@@ -190,6 +233,13 @@ const ChatWindow: React.FC = () => {
       </div>
 
       <ChatInput onSend={handleSendMessage} />
+
+      <ImageViewer 
+        isOpen={viewerConfig.isOpen}
+        onClose={() => setViewerConfig({ ...viewerConfig, isOpen: false })}
+        imageUrl={viewerConfig.url}
+        alt={viewerConfig.alt}
+      />
     </main>
   );
 };
