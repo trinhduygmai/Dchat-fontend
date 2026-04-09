@@ -69,29 +69,29 @@ const AddFriend: React.FC = () => {
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="h-full flex flex-col bg-white/40 backdrop-blur-xl rounded-2xl border border-white/20 shadow-sm overflow-hidden"
+      className="h-full flex flex-col bg-card border border-outline-variant/30 rounded-3xl overflow-hidden"
     >
-      <div className="p-8 border-b border-zinc-200/50">
+      <div className="p-8 border-b border-outline-variant/30 bg-card">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-black tracking-tight">Kết nối bạn bè</h2>
-          <div className="flex items-center gap-2 px-3 py-1 bg-zinc-900 text-white rounded-full text-[10px] font-bold uppercase tracking-widest">
+          <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Kết nối bạn bè</h2>
+          <div className="flex items-center gap-2 px-3 py-1 bg-slate-800 text-white rounded-full text-[10px] font-bold uppercase tracking-widest">
             <Sparkles className="w-3 h-3" />
             Luminous
           </div>
         </div>
         
         <form onSubmit={handleSearch} className="relative">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
           <input
             type="text"
             placeholder="Tìm kiếm theo tên hoặc email..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 pr-4 py-4 bg-white/60 border border-zinc-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+            className="w-full pl-12 pr-4 py-4 bg-white border border-slate-300 text-slate-900 rounded-xl focus:ring-2 focus:ring-slate-300 focus:outline-none placeholder:text-slate-400 transition-all"
           />
           <button 
             type="submit"
-            className="absolute right-3 top-1/2 -translate-y-1/2 bg-zinc-900 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-zinc-800 transition-all"
+            className="absolute right-3 top-1/2 -translate-y-1/2 bg-slate-800 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-slate-700 transition-all"
           >
             Tìm kiếm
           </button>
@@ -103,8 +103,8 @@ const AddFriend: React.FC = () => {
         {friendRequests.length > 0 && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <p className="text-xs font-bold text-zinc-400 uppercase tracking-widest">Lời mời kết bạn ({friendRequests.length})</p>
-              <div className="h-[1px] flex-1 bg-zinc-200/50 ml-4"></div>
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Lời mời kết bạn ({friendRequests.length})</p>
+              <div className="h-[1px] flex-1 bg-slate-200 ml-4"></div>
             </div>
             <div className="grid grid-cols-1 gap-4">
               <AnimatePresence>
@@ -115,13 +115,13 @@ const AddFriend: React.FC = () => {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
-                    className="bg-white/60 p-5 rounded-2xl border border-zinc-100 flex items-center justify-between hover:shadow-md transition-all group"
+                    className="bg-white border border-slate-200 shadow-sm p-5 rounded-2xl flex items-center justify-between hover:shadow-md transition-all group"
                   >
                     <div className="flex items-center gap-4">
                       <img src={req.senderAvatar} alt={req.senderName} className="w-14 h-14 rounded-full object-cover shadow-sm" />
                       <div className="space-y-1">
-                        <h4 className="font-bold text-zinc-900">{req.senderName}</h4>
-                        <div className="flex items-center gap-2 text-[10px] text-zinc-500 font-medium uppercase tracking-tighter">
+                        <h4 className="font-bold text-slate-900">{req.senderName}</h4>
+                        <div className="flex items-center gap-2 text-[10px] text-slate-500 font-medium uppercase tracking-tighter">
                           <Clock className="w-3 h-3" />
                           <span>{new Date(req.createdAt).toLocaleDateString()}</span>
                         </div>
@@ -130,14 +130,14 @@ const AddFriend: React.FC = () => {
                     <div className="flex gap-2">
                       <button
                         onClick={() => handleAccept(req.id)}
-                        className="flex items-center gap-2 bg-zinc-900 text-white px-5 py-2 rounded-xl text-xs font-bold hover:bg-zinc-800 transition-all active:scale-95"
+                        className="flex items-center gap-2 bg-slate-800 text-white px-5 py-2 rounded-xl text-xs font-medium hover:bg-slate-700 transition-all active:scale-95"
                       >
                         <UserCheck className="w-4 h-4" />
                         Đồng ý
                       </button>
                       <button
                         onClick={() => handleReject(req.id)}
-                        className="flex items-center gap-2 bg-zinc-100 text-zinc-500 px-5 py-2 rounded-xl text-xs font-bold hover:bg-red-50 hover:text-red-500 transition-all active:scale-95"
+                        className="flex items-center gap-2 bg-slate-100 text-slate-500 px-5 py-2 rounded-xl text-xs font-medium hover:bg-red-50 hover:text-red-500 transition-all active:scale-95"
                       >
                         <UserX className="w-4 h-4" />
                         Từ chối
@@ -153,10 +153,10 @@ const AddFriend: React.FC = () => {
         {/* Search Results Section */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <p className="text-xs font-bold text-zinc-400 uppercase tracking-widest">
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">
               {isSearching ? 'Đang tìm kiếm...' : searchResults.length > 0 ? 'Kết quả tìm kiếm' : 'Gợi ý kết nối'}
             </p>
-            <div className="h-[1px] flex-1 bg-zinc-200/50 ml-4"></div>
+            <div className="h-[1px] flex-1 bg-slate-200 ml-4"></div>
           </div>
 
           {isSearching ? (
@@ -167,22 +167,22 @@ const AddFriend: React.FC = () => {
           ) : searchResults.length > 0 ? (
             <div className="space-y-4">
               {searchResults.map((result) => (
-                <div key={result.id} className="flex items-center justify-between p-5 bg-white/60 rounded-2xl border border-zinc-100 hover:border-zinc-200 transition-all group">
+                <div key={result.id} className="flex items-center justify-between p-5 bg-white border border-slate-200 shadow-sm rounded-2xl hover:shadow-md transition-all group">
                   <div className="flex items-center gap-4">
                     <img src={result.avatar} alt={result.name} className="w-14 h-14 rounded-full object-cover shadow-sm" />
                     <div>
-                      <h3 className="font-bold text-zinc-900">{result.name}</h3>
-                      <p className="text-xs text-zinc-500">{result.status === 'online' ? 'Đang hoạt động' : 'Ngoại tuyến'}</p>
+                      <h3 className="font-bold text-slate-900">{result.name}</h3>
+                      <p className="text-xs text-slate-500">{result.status === 'online' ? 'Đang hoạt động' : 'Ngoại tuyến'}</p>
                     </div>
                   </div>
                   
                   {isAlreadyFriend(result.id) ? (
-                    <div className="flex items-center gap-1 text-green-600 bg-green-50 px-4 py-2 rounded-xl text-xs font-bold">
+                    <div className="flex items-center gap-1 text-green-600 bg-green-50 px-4 py-2 rounded-xl text-xs font-medium">
                       <Check className="w-4 h-4" />
                       Đã là bạn bè
                     </div>
                   ) : (
-                    <button className="flex items-center gap-2 bg-zinc-900 text-white px-5 py-2 rounded-xl text-xs font-bold hover:bg-zinc-800 transition-all active:scale-95">
+                    <button className="flex items-center gap-2 bg-slate-800 text-white px-5 py-2 rounded-xl text-xs font-medium hover:bg-slate-700 transition-all active:scale-95">
                       <UserPlus className="w-4 h-4" />
                       Kết bạn
                     </button>

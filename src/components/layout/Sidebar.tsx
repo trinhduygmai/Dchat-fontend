@@ -28,9 +28,9 @@ const Sidebar: React.FC = () => {
   };
 
   return (
-    <aside className="h-full flex flex-col justify-between bg-card w-20 items-center py-8 rounded-xl shadow-sm font-manrope text-sm antialiased text-zinc-700">
+    <aside className="h-full flex flex-col justify-between bg-surface-container-high w-20 items-center py-8 rounded-3xl border border-outline-variant/30 shadow-sm font-manrope text-sm antialiased text-slate-700">
       <div className="flex flex-col items-center gap-8">
-        <div className="text-zinc-900 font-bold text-xl">
+        <div className="text-slate-900 font-bold text-xl">
           <Sparkles className="w-8 h-8" />
         </div>
         <nav className="flex flex-col gap-6">
@@ -40,8 +40,8 @@ const Sidebar: React.FC = () => {
               onClick={() => handleNavClick(item.id)}
               className={`p-3 transition-all scale-95 active:scale-90 duration-200 rounded-full ${
                 activeTab === item.id
-                  ? 'bg-zinc-200 text-zinc-900'
-                  : 'text-zinc-500 hover:text-zinc-800'
+                  ? 'bg-slate-800 text-white shadow-md'
+                  : 'text-slate-500 hover:text-slate-800 hover:bg-white'
               }`}
             >
               <item.icon className="w-6 h-6" />
@@ -52,14 +52,14 @@ const Sidebar: React.FC = () => {
       <div className="flex flex-col items-center gap-6">
         <button
           onClick={() => logout()}
-          className="p-3 text-zinc-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all"
+          className="p-3 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all"
           title="Đăng xuất"
         >
           <LogOut className="w-6 h-6" />
         </button>
         <button
           onClick={() => setIsProfileModalOpen(true)}
-          className="w-12 h-12 rounded-full overflow-hidden border-2 border-surface-container shadow-sm hover:ring-2 hover:ring-primary/20 transition-all"
+          className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-sm hover:ring-2 hover:ring-slate-300 transition-all"
         >
           <img
             src={user?.avatar}

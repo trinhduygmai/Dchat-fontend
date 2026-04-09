@@ -24,26 +24,26 @@ const ConversationList: React.FC = () => {
   });
 
   return (
-    <section className="w-full flex flex-col bg-card rounded-xl overflow-hidden h-full shadow-sm">
+    <section className="w-full flex flex-col bg-surface-container-high border border-outline-variant/30 rounded-3xl overflow-hidden h-full shadow-sm">
       <div className="p-6 pb-4">
         <div className="flex items-center justify-between mb-4">
-          <h1 className="text-xl font-extrabold tracking-tight font-headline">Messages</h1>
+          <h1 className="text-xl font-bold tracking-tight text-slate-900">Messages</h1>
           <button 
             onClick={() => setIsCreateGroupModalOpen(true)}
-            className="p-2 hover:bg-zinc-100 rounded-full transition-all text-zinc-500"
+            className="p-2 hover:bg-white rounded-full transition-all text-slate-500"
             title="Tạo nhóm mới"
           >
             <UserPlus className="w-5 h-5" />
           </button>
         </div>
         <div className="relative group">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg w-4 h-4" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
           <input
             type="text"
             placeholder="Search chats..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full bg-surface-container-high border-none rounded-full py-2.5 pl-11 pr-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-outline-variant"
+            className="w-full bg-white border border-slate-300 rounded-xl py-2.5 pl-11 pr-4 text-sm focus:ring-2 focus:ring-slate-300 focus:outline-none transition-all placeholder:text-slate-400"
           />
         </div>
       </div>
@@ -52,32 +52,32 @@ const ConversationList: React.FC = () => {
           <div
             key={conv.id}
             onClick={() => setActiveConversation(conv)}
-            className={`flex items-center gap-4 p-4 rounded-lg cursor-pointer transition-all group ${
+            className={`flex items-center gap-4 p-4 rounded-xl cursor-pointer transition-all group ${
               activeConversation?.id === conv.id
-                ? 'bg-bubble-dark text-white'
-                : 'hover:bg-bubble-dark text-on-surface'
+                ? 'bg-slate-800 text-white shadow-md'
+                : 'hover:bg-white border border-transparent hover:border-slate-200 text-slate-700'
             }`}
           >
             <div className="relative">
               <img
                 src={conv.avatar}
                 alt={conv.name}
-                className="w-14 h-14 rounded-full object-cover"
+                className="w-14 h-14 rounded-full object-cover shadow-sm"
               />
               {!conv.isCloud && (
-                <span className={`absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 rounded-full ${activeConversation?.id === conv.id ? 'border-bubble-dark' : 'border-card group-hover:border-bubble-dark'}`}></span>
+                <span className={`absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 rounded-full ${activeConversation?.id === conv.id ? 'border-slate-800' : 'border-surface-container-high group-hover:border-white'}`}></span>
               )}
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex justify-between items-baseline mb-1">
-                <h3 className={`font-bold truncate transition-colors ${activeConversation?.id === conv.id ? 'text-white' : 'text-black group-hover:text-white'}`}>
+                <h3 className={`font-bold truncate transition-colors ${activeConversation?.id === conv.id ? 'text-white' : 'text-slate-900'}`}>
                   {conv.name}
                 </h3>
-                <span className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${activeConversation?.id === conv.id ? 'text-zinc-400' : 'text-on-surface-variant group-hover:text-zinc-400'}`}>
+                <span className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${activeConversation?.id === conv.id ? 'text-slate-400' : 'text-slate-500'}`}>
                   {conv.lastMessageTime}
                 </span>
               </div>
-              <p className={`text-sm truncate transition-colors ${activeConversation?.id === conv.id ? 'text-zinc-300 font-medium' : 'text-on-surface-variant group-hover:text-zinc-300'}`}>
+              <p className={`text-sm truncate transition-colors ${activeConversation?.id === conv.id ? 'text-slate-300 font-medium' : 'text-slate-500'}`}>
                 {conv.lastMessage}
               </p>
             </div>

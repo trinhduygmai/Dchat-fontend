@@ -60,7 +60,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend }) => {
     <footer className="p-6 pt-0">
       <AttachmentPreview attachments={attachments} onRemove={removeAttachment} />
       
-      <div className="bg-surface-container-high rounded-3xl flex items-end px-6 py-3 gap-4 shadow-sm border border-zinc-100/50">
+      <div className="bg-surface-container-high rounded-[28px] flex items-end px-5 py-2.5 gap-3 shadow-sm focus-within:bg-white focus-within:shadow-[0_0_0_4px_rgba(228,228,231,0.4)] transition-all duration-200">
         <input
           type="file"
           ref={fileInputRef}
@@ -70,7 +70,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend }) => {
         />
         <button 
           onClick={() => fileInputRef.current?.click()}
-          className="text-on-surface-variant hover:text-primary transition-colors mb-1.5"
+          className="text-on-surface-variant hover:text-primary transition-colors mb-1.5 p-1 hover:bg-zinc-100 rounded-full"
         >
           <PlusCircle className="w-6 h-6" />
         </button>
@@ -81,7 +81,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend }) => {
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={handleKeyPress}
           rows={1}
-          className="flex-1 bg-transparent border-none focus:ring-0 text-sm placeholder:text-outline-variant text-zinc-900 py-2 resize-none max-h-32 custom-scrollbar"
+          className="flex-1 bg-transparent border-none focus:ring-0 focus:outline-none text-[15px] leading-relaxed placeholder:text-zinc-400 text-zinc-800 py-2.5 resize-none max-h-40 custom-scrollbar"
           style={{ height: 'auto' }}
           onInput={(e) => {
             const target = e.target as HTMLTextAreaElement;
@@ -90,15 +90,15 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend }) => {
           }}
         />
 
-        <div className="flex items-center gap-4 mb-1">
-          <button className="text-on-surface-variant hover:text-primary transition-colors">
+        <div className="flex items-center gap-2 mb-1">
+          <button className="text-on-surface-variant hover:text-primary transition-colors p-1.5 hover:bg-zinc-100 rounded-full">
             <Smile className="w-6 h-6" />
           </button>
           <button
             onClick={handleSend}
             disabled={!message.trim() && attachments.length === 0}
             className={`bg-bubble-dark text-white w-10 h-10 rounded-full flex items-center justify-center shadow-md transition-all ${
-              (!message.trim() && attachments.length === 0) ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105 active:scale-95'
+              (!message.trim() && attachments.length === 0) ? 'opacity-40 cursor-not-allowed grayscale' : 'hover:scale-105 active:scale-95 hover:shadow-lg'
             }`}
           >
             <Send className="w-4 h-4" />

@@ -52,13 +52,13 @@ const ChatInfoDrawer: React.FC<ChatInfoDrawerProps> = ({
           animate={{ x: 0 }}
           exit={{ x: '100%' }}
           transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-          className="w-80 h-full bg-card border-l border-zinc-200/50 flex flex-col z-50 shadow-xl"
+          className="w-80 h-full bg-surface-container-high border-l border-outline-variant/30 flex flex-col z-50 shadow-xl"
         >
-          <header className="p-6 border-b border-zinc-200/50 flex justify-between items-center">
-            <h3 className="font-bold text-lg">Thông tin hội thoại</h3>
+          <header className="p-6 border-b border-outline-variant/30 flex justify-between items-center">
+            <h3 className="font-bold text-lg text-slate-900">Thông tin hội thoại</h3>
             <button
               onClick={() => setIsChatInfoOpen(false)}
-              className="p-2 hover:bg-zinc-100 rounded-full transition-all text-zinc-500"
+              className="p-2 hover:bg-white rounded-full transition-all text-slate-500"
             >
               <X className="w-5 h-5" />
             </button>
@@ -71,12 +71,12 @@ const ChatInfoDrawer: React.FC<ChatInfoDrawerProps> = ({
                 alt={activeConversation?.name}
                 className="w-24 h-24 rounded-full object-cover shadow-lg border-4 border-white"
               />
-              <h4 className="font-bold text-xl">{activeConversation?.name}</h4>
+              <h4 className="font-bold text-xl text-slate-900">{activeConversation?.name}</h4>
               {!isGroup && !activeConversation?.isCloud && (
                 <span className="text-sm text-green-500 font-medium">Online</span>
               )}
               {isGroup && (
-                <span className="text-xs font-bold text-zinc-400 uppercase tracking-widest">
+                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">
                   Nhóm • {activeConversation?.members?.length || 0} thành viên
                 </span>
               )}
@@ -88,7 +88,7 @@ const ChatInfoDrawer: React.FC<ChatInfoDrawerProps> = ({
                 <div className="space-y-3">
                   <button
                     onClick={() => toggleSection('members')}
-                    className="w-full flex justify-between items-center font-bold text-xs text-zinc-400 uppercase tracking-widest"
+                    className="w-full flex justify-between items-center font-bold text-xs text-slate-400 uppercase tracking-widest"
                   >
                     <div className="flex items-center gap-2">
                       <Users className="w-4 h-4" />
@@ -99,8 +99,8 @@ const ChatInfoDrawer: React.FC<ChatInfoDrawerProps> = ({
                   
                   {expandedSections.members && (
                     <div className="space-y-3">
-                      <button className="w-full flex items-center gap-3 p-2 rounded-xl hover:bg-zinc-50 transition-all text-zinc-600 group">
-                        <div className="w-8 h-8 rounded-full bg-zinc-100 flex items-center justify-center group-hover:bg-white transition-all">
+                      <button className="w-full flex items-center gap-3 p-2 rounded-xl hover:bg-white border border-transparent hover:border-slate-200 transition-all text-slate-600 group">
+                        <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-white transition-all">
                           <UserPlus className="w-4 h-4" />
                         </div>
                         <span className="text-sm font-bold">Thêm thành viên</span>
@@ -116,9 +116,9 @@ const ChatInfoDrawer: React.FC<ChatInfoDrawerProps> = ({
                             <div className="flex items-center gap-3">
                               <img src={member.avatar} alt={member.name} className="w-8 h-8 rounded-full object-cover" />
                               <div className="flex flex-col">
-                                <span className="text-sm font-medium text-zinc-900">{member.name}</span>
+                                <span className="text-sm font-medium text-slate-900">{member.name}</span>
                                 {member.id === activeConversation?.adminId && (
-                                  <span className="text-[10px] font-bold text-primary uppercase">Trưởng nhóm</span>
+                                  <span className="text-[10px] font-bold text-slate-800 uppercase">Trưởng nhóm</span>
                                 )}
                               </div>
                             </div>
@@ -130,13 +130,13 @@ const ChatInfoDrawer: React.FC<ChatInfoDrawerProps> = ({
                                       changeGroupAdmin(activeConversation!.id, member.id);
                                     }
                                   }}
-                                  className="p-1.5 text-zinc-400 hover:text-amber-500 hover:bg-amber-50 rounded-lg transition-all"
+                                  className="p-1.5 text-slate-400 hover:text-amber-500 hover:bg-amber-50 rounded-lg transition-all"
                                   title="Chỉ định trưởng nhóm"
                                 >
                                   <Crown className="w-4 h-4" />
                                 </button>
                                 <button 
-                                  className="p-1.5 text-zinc-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
+                                  className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
                                   title="Xóa khỏi nhóm"
                                 >
                                   <UserMinus className="w-4 h-4" />
@@ -155,7 +155,7 @@ const ChatInfoDrawer: React.FC<ChatInfoDrawerProps> = ({
               <div className="space-y-2">
                 <button
                   onClick={() => toggleSection('media')}
-                  className="w-full flex justify-between items-center font-bold text-sm text-zinc-500 uppercase tracking-widest"
+                  className="w-full flex justify-between items-center font-bold text-sm text-slate-500 uppercase tracking-widest"
                 >
                   <div className="flex items-center gap-2">
                     <Image className="w-4 h-4" />
@@ -166,7 +166,7 @@ const ChatInfoDrawer: React.FC<ChatInfoDrawerProps> = ({
                 {expandedSections.media && (
                   <div className="grid grid-cols-3 gap-2 pl-6">
                     {media?.images.map((img, i) => (
-                      <img key={i} src={img} alt="Media" className="w-full aspect-square object-cover rounded-md cursor-pointer hover:opacity-80 transition-all shadow-sm" />
+                      <img key={i} src={img} alt="Media" className="w-full aspect-square object-cover rounded-md cursor-pointer hover:opacity-80 transition-all shadow-sm border border-slate-100" />
                     ))}
                   </div>
                 )}
@@ -176,7 +176,7 @@ const ChatInfoDrawer: React.FC<ChatInfoDrawerProps> = ({
               <div className="space-y-2">
                 <button
                   onClick={() => toggleSection('files')}
-                  className="w-full flex justify-between items-center font-bold text-sm text-zinc-500 uppercase tracking-widest"
+                  className="w-full flex justify-between items-center font-bold text-sm text-slate-500 uppercase tracking-widest"
                 >
                   <div className="flex items-center gap-2">
                     <FileText className="w-4 h-4" />
@@ -188,12 +188,12 @@ const ChatInfoDrawer: React.FC<ChatInfoDrawerProps> = ({
                   <div className="pl-6 space-y-3">
                     {media?.files.map((file, i) => (
                       <div key={i} className="flex items-center gap-3 cursor-pointer group">
-                        <div className="p-2 bg-zinc-100 rounded-lg text-zinc-500 group-hover:text-primary transition-all">
+                        <div className="p-2 bg-slate-100 rounded-lg text-slate-500 group-hover:text-slate-800 transition-all">
                           <FileText className="w-4 h-4" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium truncate">{file.name}</p>
-                          <p className="text-xs text-zinc-500">{file.size}</p>
+                          <p className="text-sm font-medium text-slate-900 truncate">{file.name}</p>
+                          <p className="text-xs text-slate-500">{file.size}</p>
                         </div>
                       </div>
                     ))}
@@ -205,7 +205,7 @@ const ChatInfoDrawer: React.FC<ChatInfoDrawerProps> = ({
               <div className="space-y-2">
                 <button
                   onClick={() => toggleSection('links')}
-                  className="w-full flex justify-between items-center font-bold text-sm text-zinc-500 uppercase tracking-widest"
+                  className="w-full flex justify-between items-center font-bold text-sm text-slate-500 uppercase tracking-widest"
                 >
                   <div className="flex items-center gap-2">
                     <Link className="w-4 h-4" />
@@ -217,12 +217,12 @@ const ChatInfoDrawer: React.FC<ChatInfoDrawerProps> = ({
                   <div className="pl-6 space-y-3">
                     {media?.links.map((link, i) => (
                       <a key={i} href={link.url} target="_blank" rel="noreferrer" className="flex items-center gap-3 group">
-                        <div className="p-2 bg-zinc-100 rounded-lg text-zinc-500 group-hover:text-primary transition-all">
+                        <div className="p-2 bg-slate-100 rounded-lg text-slate-500 group-hover:text-slate-800 transition-all">
                           <Link className="w-4 h-4" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium truncate">{link.title}</p>
-                          <p className="text-xs text-zinc-500 truncate">{link.url}</p>
+                          <p className="text-sm font-medium text-slate-900 truncate">{link.title}</p>
+                          <p className="text-xs text-slate-500 truncate">{link.url}</p>
                         </div>
                       </a>
                     ))}
@@ -233,7 +233,7 @@ const ChatInfoDrawer: React.FC<ChatInfoDrawerProps> = ({
           </div>
           
           {isGroup && (
-            <div className="p-6 border-t border-zinc-100">
+            <div className="p-6 border-t border-slate-100">
               <button 
                 onClick={() => {
                   if (window.confirm('Bạn có chắc chắn muốn rời khỏi nhóm này?')) {

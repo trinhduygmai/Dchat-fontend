@@ -14,6 +14,7 @@ import AddFriend from '../../components/contacts/AddFriend';
 import GroupList from '../../components/contacts/GroupList';
 import ProfileModal from '../../components/ui/ProfileModal';
 import CreateGroupModal from '../../components/chat/CreateGroupModal';
+import SettingsPanel from '../../components/settings/SettingsPanel';
 import { useGlobal } from '../../context/GlobalContext';
 
 const HomePage: React.FC = () => {
@@ -67,14 +68,13 @@ const HomePage: React.FC = () => {
       )}
 
       {activeTab === 'settings' && (
-        <div className="flex-1 flex items-center justify-center bg-white/40 backdrop-blur-xl rounded-2xl border border-white/20 shadow-sm">
-          <p className="text-zinc-500 font-medium">Settings Page (Coming soon)</p>
-        </div>
+        <SettingsPanel />
       )}
 
       <ProfileModal />
       <CreateGroupModal />
     </div>
+    
   );
 };
 

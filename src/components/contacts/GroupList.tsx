@@ -49,26 +49,26 @@ const GroupList: React.FC = () => {
   };
 
   return (
-    <div className="h-full flex flex-col bg-white/40 backdrop-blur-xl rounded-2xl border border-white/20 shadow-sm overflow-hidden">
-      <header className="p-6 border-b border-white/20">
+    <div className="h-full flex flex-col bg-card border border-outline-variant/30 rounded-3xl overflow-hidden">
+      <header className="p-6 border-b border-outline-variant/30 bg-card">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold flex items-center gap-2">
-            <Users className="w-6 h-6 text-zinc-900" />
+          <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+            <Users className="w-6 h-6 text-slate-800" />
             Danh sách nhóm
           </h2>
-          <span className="bg-bubble-dark/10 text-bubble-dark px-3 py-1 rounded-full text-xs font-bold">
+          <span className="bg-slate-800 text-white px-3 py-1 rounded-full text-xs font-bold">
             {groupConversations.length} Nhóm
           </span>
         </div>
 
         <div className="relative group">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 w-4 h-4" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
           <input
             type="text"
             placeholder="Tìm kiếm nhóm..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full bg-white/50 border-none rounded-xl py-2.5 pl-11 pr-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all"
+            className="w-full bg-white border border-slate-300 text-slate-900 rounded-xl py-2.5 pl-11 pr-4 text-sm focus:ring-2 focus:ring-slate-300 focus:outline-none placeholder:text-slate-400 transition-all"
           />
         </div>
       </header>
@@ -90,7 +90,7 @@ const GroupList: React.FC = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95 }}
-                  className="bg-white/60 p-4 rounded-2xl border border-white/40 hover:shadow-md transition-all group relative"
+                  className="bg-white border border-slate-200 shadow-sm p-4 rounded-2xl hover:shadow-md transition-all group relative"
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
@@ -100,10 +100,10 @@ const GroupList: React.FC = () => {
                         className="w-12 h-12 rounded-2xl object-cover shadow-sm"
                       />
                       <div>
-                        <h3 className="font-bold text-zinc-900 truncate max-w-[120px]">
+                        <h3 className="font-bold text-slate-900 truncate max-w-[120px]">
                           {group.name}
                         </h3>
-                        <p className="text-[10px] text-zinc-500 font-medium uppercase tracking-wider">
+                        <p className="text-[10px] text-slate-500 font-medium uppercase tracking-wider">
                           {group.members?.length || 0} Thành viên
                         </p>
                       </div>
@@ -112,7 +112,7 @@ const GroupList: React.FC = () => {
                     <div className="relative">
                       <button 
                         onClick={() => setOpenMenuId(openMenuId === group.id ? null : group.id)}
-                        className={`p-1.5 rounded-lg text-zinc-400 transition-all ${openMenuId === group.id ? 'bg-zinc-100 text-zinc-900' : 'hover:bg-white'}`}
+                        className={`p-1.5 rounded-lg text-slate-400 transition-all ${openMenuId === group.id ? 'bg-slate-100 text-slate-900' : 'hover:bg-white'}`}
                       >
                         <MoreVertical className="w-4 h-4" />
                       </button>
@@ -120,18 +120,18 @@ const GroupList: React.FC = () => {
                       {openMenuId === group.id && (
                         <div 
                           ref={menuRef}
-                          className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-zinc-100 py-1 z-50 animate-in fade-in zoom-in duration-200"
+                          className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-slate-100 py-1 z-50 animate-in fade-in zoom-in duration-200"
                         >
                           {isAdmin && (
                             <button 
                               onClick={() => setSelectingAdminFor(group.id)}
-                              className="w-full flex items-center justify-between px-4 py-2.5 text-sm text-zinc-700 hover:bg-zinc-50 transition-all"
+                              className="w-full flex items-center justify-between px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-all"
                             >
                               <div className="flex items-center gap-2">
                                 <Crown className="w-4 h-4 text-amber-500" />
                                 <span>Chọn trưởng nhóm</span>
                               </div>
-                              <ChevronRight className="w-3.5 h-3.5 text-zinc-400" />
+                              <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
                             </button>
                           )}
                           <button 
@@ -143,23 +143,23 @@ const GroupList: React.FC = () => {
                           </button>
 
                           {selectingAdminFor === group.id && (
-                            <div className="absolute top-0 right-full mr-2 w-48 bg-white rounded-xl shadow-xl border border-zinc-100 py-1 animate-in slide-in-from-right-2 duration-200">
-                              <div className="px-4 py-2 border-b border-zinc-50">
-                                <span className="text-[10px] font-bold text-zinc-400 uppercase">Chọn admin mới</span>
+                            <div className="absolute top-0 right-full mr-2 w-48 bg-white rounded-xl shadow-xl border border-slate-100 py-1 animate-in slide-in-from-right-2 duration-200">
+                              <div className="px-4 py-2 border-b border-slate-50">
+                                <span className="text-[10px] font-bold text-slate-400 uppercase">Chọn admin mới</span>
                               </div>
                               <div className="max-h-48 overflow-y-auto py-1">
                                 {members.filter(m => m.id !== user?.id).map(member => (
                                   <button
                                     key={member.id}
                                     onClick={() => handleChangeAdmin(group.id, member.id)}
-                                    className="w-full flex items-center gap-2 px-4 py-2 text-sm text-zinc-700 hover:bg-zinc-50 transition-all"
+                                    className="w-full flex items-center gap-2 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-all"
                                   >
                                     <img src={member.avatar} alt="" className="w-5 h-5 rounded-full" />
                                     <span className="truncate">{member.name}</span>
                                   </button>
                                 ))}
                                 {members.length <= 1 && (
-                                  <div className="px-4 py-2 text-xs text-zinc-400 italic">Không có thành viên khác</div>
+                                  <div className="px-4 py-2 text-xs text-slate-400 italic">Không có thành viên khác</div>
                                 )}
                               </div>
                             </div>
@@ -172,7 +172,7 @@ const GroupList: React.FC = () => {
                   <div className="flex gap-2">
                     <button
                       onClick={() => handleOpenChat(group)}
-                      className="flex-1 flex items-center justify-center gap-2 py-2 bg-bubble-dark text-white rounded-xl text-xs font-bold hover:opacity-90 transition-all"
+                      className="flex-1 flex items-center justify-center gap-2 py-2 bg-slate-800 text-white rounded-xl text-xs font-medium hover:bg-slate-700 transition-all"
                     >
                       <MessageCircle className="w-3.5 h-3.5" />
                       Nhắn tin
