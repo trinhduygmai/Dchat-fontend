@@ -16,7 +16,7 @@ import {
 } from '../mocks/mockData';
 import { User, Conversation, Message, FriendRequest, ChatMedia, UserSettings, LoginData, RegisterData, AuthResponse, UserStatus } from '../types/types';
 
-const USE_MOCK = true;
+const USE_MOCK = false;
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
