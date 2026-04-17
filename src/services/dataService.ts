@@ -35,7 +35,7 @@ export const dataService = {
       const newUser: User = {
         id: Math.random().toString(36).substr(2, 9),
         name: data.name,
-        email: data.email,
+        phone: data.phone,
         avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${data.name}`,
         status: UserStatus.ONLINE,
       };

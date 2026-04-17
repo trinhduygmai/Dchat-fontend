@@ -16,7 +16,6 @@ export interface User {
   status: UserStatus;
   bio?: string;
   phone?: string;
-  email?: string;
 }
 
 export interface Message {
@@ -77,12 +76,12 @@ export interface AuthResponse {
 }
 
 export interface LoginData {
-  email: string;
+  phone: string;
   password?: string;
 }
 
 export interface RegisterData {
   name: string;
-  email: string;
+  phone: string;
   password?: string;
 }

@@ -58,11 +58,11 @@ const SettingsPanel: React.FC = () => {
         </div>
         
         <div className="grid gap-2">
-          <label className="text-sm font-medium text-slate-500 ml-1">Email</label>
+          <label className="text-sm font-medium text-slate-500 ml-1">Số điện thoại</label>
           <input 
-            type="email" 
-            defaultValue={user?.email}
-            placeholder="example@gmail.com"
+            type="tel" 
+            defaultValue={user?.phone}
+            placeholder="0xxxxxxxxx"
             className="w-full px-4 py-2.5 bg-white border border-slate-300 text-slate-900 rounded-xl focus:ring-2 focus:ring-slate-300 focus:outline-none placeholder:text-slate-400 transition-all"
           />
         </div>

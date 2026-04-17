@@ -5,7 +5,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Mail, Lock, Loader2, ArrowRight } from 'lucide-react';
+import { Phone, Lock, Loader2, ArrowRight } from 'lucide-react';
 import { useGlobal } from '../../context/GlobalContext';
 
 interface LoginPageProps {
@@ -14,17 +14,26 @@ interface LoginPageProps {
 
 const LoginPage: React.FC<LoginPageProps> = ({ onSwitchToRegister }) => {
   const { login } = useGlobal();
-  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  const validatePhone = (p: string) => {
+    const phoneRegex = /^(\+84|0)[0-9]{9,10}$/;
+    return phoneRegex.test(p);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validatePhone(phone)) {
+      setError('Số điện thoại không hợp lệ. Vui lòng kiểm tra lại.');
+      return;
+    }
     setLoading(true);
     setError('');
     try {
-      await login({ email, password });
+      await login({ phone, password });
     } catch (err) {
       setError('Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.');
     } finally {
@@ -47,15 +56,18 @@ const LoginPage: React.FC<LoginPageProps> = ({ onSwitchToRegister }) => {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest ml-1">Email</label>
+              <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest ml-1">Số điện thoại</label>
               <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400" />
+                <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400" />
                 <input
-                  type="email"
+                  type="tel"
                   required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@example.com"
+                  value={phone}
+                  onChange={(e) => {
+                    setPhone(e.target.value);
+                    if (error) setError('');
+                  }}
+                  placeholder="0xxxxxxxxx"
                   className="w-full bg-zinc-50 border-none rounded-2xl py-4 pl-12 pr-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all"
                 />
               </div>

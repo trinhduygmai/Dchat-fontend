@@ -11,16 +11,34 @@ import { User } from '../../types/types';
 import { dataService } from '../../services/dataService';
 
 const AddFriend: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchPhone, setSearchPhone] = useState('');
+  const [phoneError, setPhoneError] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<User[]>([]);
   const { friendList, friendRequests, setFriendRequests } = useGlobal();
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!searchQuery.trim()) return;
+  const validatePhone = (phone: string) => {
+    // Basic validation: 10-11 characters, starts with 0 or +84, only numbers (and +)
+    const phoneRegex = /^(\+84|0)[0-9]{9,10}$/;
+    if (!phone) {
+      return 'Vui lòng nhập số điện thoại';
+    }
+    if (!phoneRegex.test(phone)) {
+      return 'Số điện thoại không hợp lệ, vui lòng kiểm tra lại';
+    }
+    return '';
+  };
 
+  const handlePhoneSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    const error = validatePhone(searchPhone);
+    if (error) {
+      setPhoneError(error);
+      return;
+    }
+    setPhoneError('');
     setIsSearching(true);
+
     // Mock search logic
     setTimeout(() => {
       const results: User[] = [
@@ -36,7 +54,7 @@ const AddFriend: React.FC = () => {
           avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=B',
           status: 'offline' as any,
         },
-      ].filter(u => u.name.toLowerCase().includes(searchQuery.toLowerCase()));
+      ].filter(() => Math.random() > 0.3); // Randomly show results for demo with phone
       
       setSearchResults(results);
       setIsSearching(false);
@@ -80,15 +98,23 @@ const AddFriend: React.FC = () => {
           </div>
         </div>
         
-        <form onSubmit={handleSearch} className="relative">
+        <form onSubmit={handlePhoneSearch} className="relative">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
           <input
-            type="text"
-            placeholder="Tìm kiếm theo tên hoặc email..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 pr-4 py-4 bg-white border border-slate-300 text-slate-900 rounded-xl focus:ring-2 focus:ring-slate-300 focus:outline-none placeholder:text-slate-400 transition-all"
+            type="tel"
+            placeholder="Nhập số điện thoại để tìm kiếm..."
+            value={searchPhone}
+            onChange={(e) => {
+              setSearchPhone(e.target.value);
+              if (phoneError) setPhoneError('');
+            }}
+            className={`w-full pl-12 pr-4 py-4 bg-white border ${phoneError ? 'border-red-500' : 'border-slate-300'} text-slate-900 rounded-xl focus:ring-2 ${phoneError ? 'focus:ring-red-200' : 'focus:ring-slate-300'} focus:outline-none placeholder:text-slate-400 transition-all`}
           />
+          {phoneError && (
+            <p className="absolute left-4 -bottom-6 text-red-500 text-xs font-medium animate-in fade-in slide-in-from-top-1">
+              {phoneError}
+            </p>
+          )}
           <button 
             type="submit"
             className="absolute right-3 top-1/2 -translate-y-1/2 bg-slate-800 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-slate-700 transition-all"
@@ -190,7 +216,7 @@ const AddFriend: React.FC = () => {
                 </div>
               ))}
             </div>
-          ) : searchQuery && !isSearching ? (
+          ) : searchPhone && !isSearching ? (
             <div className="flex flex-col items-center justify-center h-40 text-center space-y-2">
               <div className="w-12 h-12 bg-zinc-100 rounded-full flex items-center justify-center mb-2">
                 <X className="w-6 h-6 text-zinc-400" />
@@ -205,7 +231,7 @@ const AddFriend: React.FC = () => {
               </div>
               <div className="max-w-xs">
                 <p className="text-zinc-500 font-bold">Tìm kiếm bạn mới</p>
-                <p className="text-zinc-400 text-xs mt-1">Nhập tên hoặc email để tìm kiếm và kết nối với mọi người.</p>
+                <p className="text-zinc-400 text-xs mt-1">Nhập số điện thoại để tìm kiếm và kết nối với mọi người.</p>
               </div>
             </div>
           )}

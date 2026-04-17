@@ -83,7 +83,7 @@ const ProfileModal: React.FC = () => {
                 </div>
                 <div className="text-center">
                   <h3 className="font-bold text-xl">{user?.name}</h3>
-                  <p className="text-sm text-zinc-500">{user?.email}</p>
+                  <p className="text-sm text-zinc-500">{user?.phone}</p>
                 </div>
               </div>
 

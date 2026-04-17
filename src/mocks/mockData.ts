@@ -12,7 +12,6 @@ export const currentUser: User = {
   status: UserStatus.ONLINE,
   bio: 'Senior React Developer',
   phone: '0123456789',
-  email: 'trinhduygmai1@gmail.com',
 };
 
 export const mockUsers: User[] = [
